@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Add Questions to {{ question_set.title }}</title>
+    <script>
+        function addQuestion() {
+            // Create the HTML for the question fields
+            const questionFields = document.getElementById('question-fields').outerHTML;
+            
+            // Append the new question fields to the end of the container
+            const questionsContainer = document.getElementById('questions-container');
+            questionsContainer.insertAdjacentHTML('beforeend', questionFields);
+        }
+    </script>
+    
+</head>
+<body>
+    <h1>Add Questions to {{ question_set.title }}</h1>
+
+    <form method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        
+        <div id="questions-container">
+            <div id="question-fields">
+                <label for="question_text[]">Question Text:</label>
+                <textarea name="question_text[]" rows="4" cols="50" required></textarea>
+
+                <label for="option1[]">Option 1:</label>
+                <input type="text" name="option1[]" required>
+
+                <label for="option2[]">Option 2:</label>
+                <input type="text" name="option2[]" required>
+
+                <label for="option3[]">Option 3:</label>
+                <input type="text" name="option3[]" required>
+
+                <label for="option4[]">Option 4:</label>
+                <input type="text" name="option4[]" required>
+
+                <label for="correct_answer[]">Correct Answer:</label>
+                <select name="correct_answer[]" required>
+                    <option value="1">Option 1</option>
+                    <option value="2">Option 2</option>
+                    <option value="3">Option 3</option>
+                    <option value="4">Option 4</option>
+                </select>
+
+                <label for="solution_type[]">Solution Type:</label>
+                <select name="solution_type[]" required>
+                    <option value="text">Text</option>
+                    <option value="photo">Photo</option>
+                </select>
+
+                <label for="photo_solution[]">Photo Solution (if applicable):</label>
+                <input type="file" name="photo_solution[]">
+
+                <label for="text_solution[]">Text Solution (if applicable):</label>
+                <textarea name="text_solution[]" rows="4" cols="50"></textarea>
+            </div>
+        </div>
+
+        <input type="button" value="Add More Questions" onclick="addQuestion()">
+        <input type="submit" value="Add Questions">
+    </form>
+</body>
+</html>

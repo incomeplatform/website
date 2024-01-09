@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Question Form</title>
+</head>
+<body>
+    <form method="post" action="{% url 'subject_chapter_form' %}">
+        {% csrf_token %}
+
+        <label for="id_group">Group:</label>
+        <select id="id_group" name="group">
+            <option value="science">Science</option>
+            <option value="arts">Arts</option>
+            <option value="commerce">Commerce</option>
+            <option value="common">Common</option>
+            <!-- Add more group options as needed -->
+        </select>
+
+        <label for="id_subject">Subject:</label>
+        <select id="id_subject" name="subject">
+            <!-- Options will be dynamically populated based on the selected group -->
+        </select>
+
+        <label for="id_chapter">Chapter:</label>
+        <select id="id_chapter" name="chapter">
+            <!-- Options will be dynamically populated based on the selected subject -->
+        </select>
+
+        <label for="id_board_question">Board Question:</label>
+        <select id="id_board_question" name="board_question">
+            <option value="">None</option>
+            
+            <option value="Barisal">Barisal</option>
+            <option value="Chittagong">Chittagong</option>
+            <option value="Comilla">Comilla</option>
+            <option value="Dhaka">Dhaka</option>
+            <option value="Jessore">Jessore</option>
+            <option value="Mymensingh">Mymensingh</option>
+            <option value="Rajshahi">Rajshahi</option>
+            <option value="Sylhet">Sylhet</option>
+            <option value="Dinajpur">Dinajpur</option>
+            <option value="Combined">Combined</option>
+            <!-- Add more board/question options here -->
+        </select>
+
+        <label for="id_topics_choice">Topics:</label>
+        <select id="id_topics_choice" name="topics_choice">
+            <option value="None">None</option>
+            <option value="Yes">Yes</option>
+        </select>
+
+        <button type="submit">Submit</button>
+    </form>
+
+    <script>
+        // Define the subjects for each group
+        const subjects = {
+            science: [
+                { value: 'physics_1st', text: 'Physics 1st Paper' },
+                { value: 'physics_2nd', text: 'Physics 2nd Paper' },
+                { value: 'chemistry_1st', text: 'Chemistry 1st Paper' },
+                { value: 'chemistry_2nd', text: 'Chemistry 2nd Paper' },
+                { value: 'biology_1st', text: 'Biology 1st Paper' },
+                { value: 'biology_2nd', text: 'Biology 2nd Paper' },
+                { value: 'higher_mathematics_1st', text: 'Higher Mathematics 1st Paper' },
+                { value: 'higher_mathematics_2nd', text: 'Higher Mathematics 2nd Paper' }
+                // Add more science subjects
+            ],
+            arts: [
+                { value: 'economics_1st', text: 'Economics 1st Paper' },
+                { value: 'economics_2nd', text: 'Economics 2nd Paper' },
+                { value: 'history_1st', text: 'History 1st Paper' },
+                { value: 'history_2nd', text: 'History 2nd Paper' },
+                { value: 'islamic_history_1st', text: 'Islamic History 1st Paper' },
+                { value: 'islamic_history_2nd', text: 'Islamic History 2nd Paper' },
+                { value: 'geography_1st', text: 'Geography 1st Paper' },
+                { value: 'geography_2nd', text: 'Geography 2nd Paper' },
+                { value: 'sociology_1st', text: 'Sociology 1st Paper' },
+                { value: 'sociology_2nd', text: 'Sociology 2nd Paper' },
+                { value: 'social_work_1st', text: 'Social Work 1st Paper' },
+                { value: 'social_work_2nd', text: 'Social Work 2nd Paper' },
+                { value: 'logic_1st', text: 'Logic 1st Paper' },
+                { value: 'logic_2nd', text: 'Logic 2nd Paper' },
+            ],
+            commerce: [
+                { value: 'accounting_1st', text: 'Accounting 1st Paper' },
+                { value: 'accounting_2nd', text: 'Accounting 2nd Paper' },
+                { value: 'economics_1st', text: 'Economics 1st Paper' },
+                { value: 'economics_2nd', text: 'Economics 2nd Paper' },
+                { value: 'business_organization_1st', text: 'Business Organization 1st Paper' },
+                { value: 'business_organization_2nd', text: 'Business Organization 2nd Paper' },
+                { value: 'finance_banking_insurance_1st', text: 'Finance, Banking, and Insurance 1st Paper' },
+                { value: 'finance_banking_insurance_2nd', text: 'Finance, Banking, and Insurance 2nd Paper' }
+                // Add more commerce subjects
+            ],
+            common: [
+                { value: 'bangla', text: 'Bangla' },
+                { value: 'ict', text: 'ICT' }
+            ]
+        };
+
+        // Define the chapters for each subject
+        const chapters = {
+            physics_1st: ['Chapter 1', 'Chapter 2', 'Chapter 3'],
+            physics_2nd: ['Chapter A', 'Chapter B', 'Chapter C'],
+            chemistry_1st: ['Chapter X', 'Chapter Y', 'Chapter Z'],
+            chemistry_2nd: ['Chapter I', 'Chapter II', 'Chapter III'],
+            // Add more chapters for other subjects
+        };
+
+        // Function to update the subject select options based on the selected group
+        function updateSubjectOptions() {
+            const groupSelect = document.getElementById('id_group');
+            const subjectSelect = document.getElementById('id_subject');
+            const selectedGroup = groupSelect.value;
+            const groupSubjects = subjects[selectedGroup] || [];
+
+            // Clear existing options
+            subjectSelect.innerHTML = '<option value="">Select Subject</option>';
+
+            // Populate with options based on the selected group
+            groupSubjects.forEach(subject => {
+                const option = document.createElement('option');
+                option.value = subject.value;
+                option.text = subject.text;
+                subjectSelect.appendChild(option);
+            });
+
+            // Clear and disable the Chapter select
+            document.getElementById('id_chapter').innerHTML = '<option value="">None</option>';
+            document.getElementById('id_chapter').disabled = true;
+        }
+
+        // Function to update the chapter select options based on the selected subject
+        function updateChapterOptions() {
+            const subjectSelect = document.getElementById('id_subject');
+            const chapterSelect = document.getElementById('id_chapter');
+            const selectedSubject = subjectSelect.value;
+            const subjectChapters = chapters[selectedSubject] || [];
+
+            // Clear existing options
+            chapterSelect.innerHTML = '<option value="">Select Chapter</option>';
+
+            // Populate with options based on the selected subject
+            subjectChapters.forEach(chapter => {
+                const option = document.createElement('option');
+                option.value = chapter;
+                option.text = chapter;
+                chapterSelect.appendChild(option);
+            });
+
+            // Enable the Chapter select
+            chapterSelect.disabled = false;
+        }
+
+        // Initially, populate the subject select based on the default selected group
+        updateSubjectOptions();
+
+        // Add event listeners to update options
+        document.getElementById('id_group').addEventListener('change', updateSubjectOptions);
+        document.getElementById('id_subject').addEventListener('change', updateChapterOptions);
+    </script>
+</body>
+</html>

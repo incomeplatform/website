@@ -1,0 +1,13 @@
+<form method="post">
+    {% csrf_token %}
+    <label for="topic_text">Add or Select a Topic:</label>
+    <select name="topic_text">
+      <option value="">Select an existing topic or create a new one</option>
+      {% for topic in existing_topics %}
+        <option value="{{ topic.title }}">{{ topic.title }}</option>
+      {% endfor %}
+    </select>
+    <input type="text" name="topic_text" placeholder="Or enter a new topic">
+    <button type="submit">Add Topic</button>
+  </form>
+  

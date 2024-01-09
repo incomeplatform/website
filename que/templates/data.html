@@ -1,0 +1,36 @@
+<!-- data.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add Dynamic Table Data</title>
+</head>
+<body>
+    <h1>Add Dynamic Table Data</h1>
+
+    <form method="post">
+        {% csrf_token %}
+        
+        <table>
+            <tbody>
+                {% for i in "123456789101112131415" %}
+                    <tr>
+                        {% for j in "123456789101112131415" %}
+                            {% with field=form["cell_"|add:i|add:"_"|add:j] %}
+                                <td>
+                                    {{ field.label_tag }}
+                                    {{ field }}
+                                    {{ field.errors }}
+                                </td>
+                            {% endwith %}
+                        {% endfor %}
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        
+        <button type="submit">Save</button>
+    </form>
+</body>
+</html>

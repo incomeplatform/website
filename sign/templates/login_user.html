@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>User Login</title>
+</head>
+<body>
+    <h1>User Login</h1>
+    
+    <form method="post" action="{% url 'login_user' %}">
+        {% csrf_token %}
+        <label for="username">email:</label>
+        <input type="text" name="username" required>
+        <br>
+        <label for="password">Password:</label>
+        <input type="password" name="password" required>
+        <br>
+        {% if errors and errors.login %}
+            <p style="color: rgb(255, 0, 179);">{{ errors.login }}</p>
+        {% endif %}
+        <br>
+        <button type="submit">Login</button>
+    </form>
+    
+    <p><a href="{% url 'reset_password' %}">Forgot Password?</a></p>
+</body>
+</html>
